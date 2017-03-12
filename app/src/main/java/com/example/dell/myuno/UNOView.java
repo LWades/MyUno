@@ -41,13 +41,18 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 	int cardWidth;					//卡片宽度
 	int cardHeight;					//卡片高度
 	Paint paint;					//画笔
-	Paint change_paint;				//控制闪烁的画笔
-	String message[]=new String[3];	//计时器信息
+	Paint change_paint;				//控制抓牌闪烁的画笔
+	Paint card_blink;				//控制纸牌闪烁
+	Paint[] color_paint = new Paint[4];
+	String message[] = new String[3];	//计时器信息
 	CardGroup cardGroup = new CardGroup();		//卡组
 	Handler handler;				//消息处理器
 	GameController gc;				//游戏控制器
 	ArrayList<Card> outCards = new ArrayList<Card> ();		//出牌卡表
+//	Card[] card_change = new Card[8];
+	Bitmap[] card_change = new Bitmap[8];
 	int outCardsIndice = 0;
+	static boolean is_chooseColor = false;
 
 	//控制界面切换的变量
 	public static boolean s_nextPlayer = false;
@@ -178,6 +183,15 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 		cardGroup.card[105].bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_wild_draw4);
 		cardGroup.card[106].bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_wild_draw4);
 		cardGroup.card[107].bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_wild_draw4);
+
+		card_change[0] = BitmapFactory.decodeResource(getResources(), R.drawable.image_red_wild);
+		card_change[1] = BitmapFactory.decodeResource(getResources(), R.drawable.image_yellow_wild);
+		card_change[2] = BitmapFactory.decodeResource(getResources(), R.drawable.image_blue_wild);
+		card_change[3] = BitmapFactory.decodeResource(getResources(), R.drawable.image_green_wild);
+		card_change[4] = BitmapFactory.decodeResource(getResources(), R.drawable.image_red_wild_draw4);
+		card_change[5] = BitmapFactory.decodeResource(getResources(), R.drawable.image_yellow_wild_draw4);
+		card_change[6] = BitmapFactory.decodeResource(getResources(), R.drawable.image_blue_wild_draw4);
+		card_change[7] = BitmapFactory.decodeResource(getResources(), R.drawable.image_green_wild_draw4);
 	}
 
 	//初始化图片
@@ -221,6 +235,7 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 		System.out.println("卡片宽度" + cardWidth);
 		System.out.println("卡片高度" + cardHeight);
 
+		//计时器画笔
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(cardWidth*1/3);
@@ -229,9 +244,25 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 		paint.setStrokeWidth(1.0f);
 		paint.setTextAlign(Align.CENTER);
 
+		//闪烁动画画笔
 		change_paint = new Paint();
 		change_paint.setStyle(Style.STROKE);
 		change_paint.setAlpha(255);
+
+		card_blink = new Paint();
+		card_blink.setStyle(Style.STROKE);
+		card_blink.setAlpha(255);
+
+		//画选择颜色矩形的画笔
+		for (int i = 0; i < 4; i++){
+			color_paint[i] = new Paint();
+			color_paint[i].setStyle(Style.FILL);
+			color_paint[i].setAntiAlias(true);
+		}
+		color_paint[0].setColor(Color.RED);
+		color_paint[1].setColor(Color.YELLOW);
+		color_paint[2].setColor(Color.BLUE);
+		color_paint[3].setColor(Color.GREEN);
 	}
 
 	private int ss = 180;
@@ -284,6 +315,9 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 				drawMessage();
 
 				ddraw();
+
+				if (is_chooseColor)
+					drawChooseColor();
 			}catch (Exception e){
 				e.printStackTrace();
 			}finally{
@@ -401,14 +435,49 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			outCards.add(card);
 		}
 		if (outCards.size() > 0){
-			for (int i = 0; i < outCards.size(); i++){
-//				moveAnimation(outCards.get(i), screenWidth/2 - cardWidth + i*cardWidth/8, screenHeight/2 - cardHeight);
-//				outCards.get(i).setLocation(screenWidth/2 - cardWidth + i*cardWidth/8, screenHeight/2 - cardHeight);
-			}
+//			for (int i = 0; i < outCards.size(); i++){
+////				moveAnimation(outCards.get(i), screenWidth/2 - cardWidth + i*cardWidth/8, screenHeight/2 - cardHeight);
+////				outCards.get(i).setLocation(screenWidth/2 - cardWidth + i*cardWidth/8, screenHeight/2 - cardHeight);
+//			}
 
 			for (int i = 0; i< outCards.size(); i++){
-				drawCardLit(outCards.get(i));
+				if (i == outCards.size() - 1){
+					Rect rect= outCards.get(i).getDST();
+					rect.right = (rect.left + rect.right) / 2;
+					rect.bottom = (rect.top + rect.bottom) / 2;
+
+					canvas.drawBitmap(outCards.get(i).bitmap, null, rect, card_blink);
+				}else
+					drawCardLit(outCards.get(i));
 			}
+		}
+	}
+
+	//画出选择颜色模块
+	public void drawChooseColor(){
+		int left;
+		int right;
+		int top;
+		int bottom;
+		for(int i = 0; i < 4; i++){
+			if (i % 2 == 0){
+				left = screenWidth / 3;
+				right = screenWidth / 2;
+			}else{
+				left = screenWidth / 2;
+				right = 2 * screenWidth / 3;
+			}
+
+			if (i <= 1){
+				top = screenHeight / 3;
+				bottom = screenHeight / 2;
+			}else{
+				top = screenHeight / 2;
+				bottom = 2 * screenHeight / 3;
+			}
+
+			canvas.drawRect(left, top, right, bottom, color_paint[i]);
+//			canvas.drawRect(screenWidth/2, screenHeight/2, 2*screenWidth/3, 2*screenHeight/3, color_paint[0]);
 		}
 	}
 
@@ -552,6 +621,12 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
 
+							//处理万能牌
+							if (gc.cardNow.type == Type.Wild){
+								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+								blinkAnimationColor();
+							}
+
 							//设置出牌列表的坐标
 							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
 							int temp_y = screenHeight/2 - cardHeight;
@@ -580,6 +655,12 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
 
+							//处理万能牌
+							if (gc.cardNow.type == Type.Wild){
+								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+								blinkAnimationColor();
+							}
+
 							//设置出牌列表的坐标
 							update();
 							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
@@ -588,6 +669,8 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 								temp_x = screenWidth/2 - cardWidth;
 							}
 							moveAnimation(gc.cardNow, temp_x, temp_y);
+
+
 
 							gc.play(gc.currentCard, gc.cardNow);
 							Common.rePosition(unoView, gc.alp.get(2), 2);
@@ -608,6 +691,12 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						}else{
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
+
+							//处理万能牌
+							if (gc.cardNow.type == Type.Wild){
+								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+								blinkAnimationColor();
+							}
 
 							//设置出牌列表的坐标
 							update();
@@ -668,6 +757,16 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			update();
 		}
 
+		com.example.dell.myuno.Color temp_color;
+		if (is_chooseColor){
+			temp_color = eventAction.getChooseColor();
+			gc.currentColor = temp_color;
+			System.out.println("系统的当前颜色变了，变成了" + gc.currentColor);
+			is_chooseColor = false;
+			blinkAnimationColor();
+			gc.goOn();
+		}
+
 		Card temp_card = eventAction.buttonEvent();
 		eventAction.buttonEvent2();
 		mmove();
@@ -700,10 +799,42 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 
 	}
 
-	//闪烁动画
+	//闪烁动画:牌库
 	public void blinkAnimation(){
 		for(int i = 5; i < 18; i++){
 			change_paint.setAlpha(i * 15);
+			Sleep(50);
+			update();
+		}
+	}
+
+	//闪烁动画:换颜色
+	public void blinkAnimationColor(){
+		for(int i = 17; i > 4; i--){
+			card_blink.setAlpha(i * 15);
+			Sleep(50);
+			update();
+		}
+
+		switch (gc.currentColor){
+			case Red:
+				outCards.get(outCards.size()-1).bitmap = card_change[0];
+				break;
+			case Yellow:
+				outCards.get(outCards.size()-1).bitmap = card_change[1];
+				break;
+			case Blue:
+				outCards.get(outCards.size()-1).bitmap = card_change[2];
+				break;
+			case Green:
+				outCards.get(outCards.size()-1).bitmap = card_change[3];
+				break;
+			default:
+				break;
+		}
+
+		for(int i = 5; i < 18; i++){
+			card_blink.setAlpha(i * 15);
 			Sleep(50);
 			update();
 		}

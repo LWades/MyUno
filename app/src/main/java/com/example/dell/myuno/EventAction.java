@@ -94,4 +94,28 @@ public class EventAction {
 			unoView.gc.goOn();
 		}
 	}
+
+	public Color getChooseColor(){
+		float x = event.getX();
+		float y = event.getY();
+
+		if ((x > unoView.screenWidth / 3) && (x < unoView.screenWidth* 2 / 3) &&
+				(y > unoView.screenHeight / 3) && (y < unoView.screenHeight * 2 / 3)){
+			if (x < unoView.screenWidth / 2){
+				if (y < unoView.screenHeight / 2){
+					return Color.Red;
+				}else{
+					return Color.Blue;
+				}
+			}else{
+				if (y < unoView.screenHeight / 2){
+					return Color.Yellow;
+				}else{
+					return Color.Green;
+				}
+			}
+		}else{
+			return null;
+		}
+	}
 }

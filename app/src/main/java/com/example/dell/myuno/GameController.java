@@ -119,7 +119,6 @@ public class GameController {
 			for (int i = 0; i < alp.get((currentPlayer + 1) % playerNumber).cardNumber(); i++)
 				System.out.println("卡牌" + i + "为" + alp.get((currentPlayer + 1) % playerNumber).cardGroup.get(i));
 			currentPlayer = (currentPlayer + 2) % playerNumber;
-			//����ת��
 			System.out.println("drawtwo后颜色:" + currentColor);
 			System.out.println("界面因drawtwo跳过一人转换");
 		}else{
@@ -127,8 +126,6 @@ public class GameController {
 			alp.get((currentPlayer + 3) % playerNumber).drawCard(cg.draw());
 			Common.rePosition(unoView, alp.get((currentPlayer + 3) % playerNumber), (currentPlayer + 3) % playerNumber);
 			System.out.println("玩家手牌" + alp.get((currentPlayer + 3) % playerNumber).cardNumber() + "��");
-//			for (int i = 0; i < alp.get((currentPlayer + 1) % playerNumber).cardNumber(); i++)
-//				System.out.println("����" + i + "Ϊ" + alp.get((currentPlayer + 3) % playerNumber).cardGroup.get(i));
 			currentPlayer = (currentPlayer + 2) % playerNumber;
 			//界面转换
 			System.out.println("drawtwo后颜色:" + currentColor);
@@ -139,6 +136,7 @@ public class GameController {
 
 	public Color chooseColor() {
 		// TODO Auto-generated method stub
+//		unoView.canvas.drawBitmap();
 		return alp.get(currentPlayer).chooseColor();
 	}
 
@@ -158,7 +156,7 @@ public class GameController {
 			Common.rePosition(unoView, alp.get((currentPlayer + 1) % playerNumber), (currentPlayer + 1) % playerNumber);
 			System.out.println("玩家手牌" + alp.get((currentPlayer + 1) % playerNumber).cardNumber() + "��");
 			currentPlayer = (currentPlayer + 2) % playerNumber;
-			//����ת��
+
 			System.out.println("drawfour后颜色:" + currentColor);
 			System.out.println("界面因drawfour跳过一人转换");
 		}else{
@@ -167,13 +165,13 @@ public class GameController {
 			Common.rePosition(unoView, alp.get((currentPlayer + 3) % playerNumber), (currentPlayer + 3) % playerNumber);
 			System.out.println("玩家手牌" + alp.get((currentPlayer + 3) % playerNumber).cardNumber() + "��");
 			currentPlayer = (currentPlayer + 2) % playerNumber;
-			//����ת��
+
 			System.out.println("drawfour后颜色:" + currentColor);
 			System.out.println("界面因drawfour跳过一人转换");
 		}
 	}
 	
-	//����ʱ�ķ�Ӧ
+	//根据出牌判断该怎样进行
 	public void play(Card lastCard, Card card){
 		if (card == null)
 			return;
@@ -197,8 +195,13 @@ public class GameController {
 			currentColor = card.color;
 			drawTwo();
 		}else if (card.type == Type.Wild){
+			if(currentPlayer == 0){
+				unoView.is_chooseColor = true;
+			}else{
+				goOn();
+			}
 //			changeCurrentColor(chooseColor());
-			goOn();
+//			goOn();
 		}else if (card.type == Type.Wild_Draw_Four){
 //			changeCurrentColor(chooseColor());
 			drawFour();
