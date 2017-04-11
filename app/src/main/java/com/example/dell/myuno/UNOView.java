@@ -20,9 +20,10 @@ import android.view.SurfaceView;
 
 public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 
-//	static final int CARDWIDTH = 72*2;
+	//	static final int CARDWIDTH = 72*2;
 //	static final int CARDHEIGHT = 118*2;
 	static final int OUTCARDS_MAX = 20;
+	static boolean isDraw = false;
 
 	SurfaceHolder surfaceHolder;	//控制Surface的接口
 	Canvas canvas;					//画布
@@ -49,7 +50,7 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 	Handler handler;				//消息处理器
 	GameController gc;				//游戏控制器
 	ArrayList<Card> outCards = new ArrayList<Card> ();		//出牌卡表
-//	Card[] card_change = new Card[8];
+	//	Card[] card_change = new Card[8];
 	Bitmap[] card_change = new Bitmap[8];
 	int outCardsIndice = 0;
 	static boolean is_chooseColor = false;
@@ -604,7 +605,12 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						if (!gc.alp.get(0).playerCanDraw(gc.currentCard, gc.currentColor))
 							blinkAnimation();
 						gc.play(gc.currentCard, gc.cardNow);
-						gc.cardNow = null;
+
+						if (isDraw) {
+							gc.cardNow = null;
+							isDraw = false;
+						}
+
 						update();
 					}else if (gc.currentPlayer == 1){
 						setTimer(4, 0);
@@ -621,21 +627,28 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
 
+							//设置出牌列表的坐标
+//							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
+//							int temp_y = screenHeight/2 - cardHeight;
+//							if(outCards.size() == OUTCARDS_MAX){
+//								temp_x = screenWidth/2 - cardWidth;
+//							}
+//							moveAnimation(gc.cardNow, temp_x, temp_y);
+
+							int[] temp = Common.newCardPosition(unoView, -1);	//-1为出牌表
+							moveAnimation(gc.cardNow, temp[0], temp[1]);
+
+							//保存转换之前的玩家
+							int beyond_player = gc.currentPlayer;
+
+							gc.play(gc.currentCard, gc.cardNow);
+
 							//处理万能牌
-							if (gc.cardNow.type == Type.Wild){
-								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+							if (gc.currentCard.type == Type.Wild || gc.currentCard.type == Type.Wild_Draw_Four){
+								gc.currentColor = gc.alp.get(beyond_player).returnRandomColor();
 								blinkAnimationColor();
 							}
 
-							//设置出牌列表的坐标
-							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
-							int temp_y = screenHeight/2 - cardHeight;
-							if(outCards.size() == OUTCARDS_MAX){
-								temp_x = screenWidth/2 - cardWidth;
-							}
-							moveAnimation(gc.cardNow, temp_x, temp_y);
-
-							gc.play(gc.currentCard, gc.cardNow);
 							Common.rePosition(unoView, gc.alp.get(1), 1);
 							gc.cardNow = null;
 							update();
@@ -655,24 +668,29 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
 
+							//设置出牌列表的坐标
+							update();
+//							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
+//							int temp_y = screenHeight/2 - cardHeight;
+//							if(outCards.size() == OUTCARDS_MAX){
+//								temp_x = screenWidth/2 - cardWidth;
+//							}
+//							moveAnimation(gc.cardNow, temp_x, temp_y);
+
+							int[] temp = Common.newCardPosition(unoView, -1);	//-1为出牌表
+							moveAnimation(gc.cardNow, temp[0], temp[1]);
+
+							//保存转换之前的玩家
+							int beyond_player = gc.currentPlayer;
+
+							gc.play(gc.currentCard, gc.cardNow);
+
 							//处理万能牌
-							if (gc.cardNow.type == Type.Wild){
-								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+							if (gc.currentCard.type == Type.Wild || gc.currentCard.type == Type.Wild_Draw_Four){
+								gc.currentColor = gc.alp.get(beyond_player).returnRandomColor();
 								blinkAnimationColor();
 							}
 
-							//设置出牌列表的坐标
-							update();
-							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
-							int temp_y = screenHeight/2 - cardHeight;
-							if(outCards.size() == OUTCARDS_MAX){
-								temp_x = screenWidth/2 - cardWidth;
-							}
-							moveAnimation(gc.cardNow, temp_x, temp_y);
-
-
-
-							gc.play(gc.currentCard, gc.cardNow);
 							Common.rePosition(unoView, gc.alp.get(2), 2);
 							gc.cardNow = null;
 							update();
@@ -692,22 +710,29 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 							System.out.println("玩家" + gc.currentPlayer + "出牌");
 							outCards.add(gc.cardNow);
 
+							//设置出牌列表的坐标
+							update();
+//							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
+//							int temp_y = screenHeight/2 - cardHeight;
+//							if(outCards.size() == OUTCARDS_MAX){
+//								temp_x = screenWidth/2 - cardWidth;
+//							}
+//							moveAnimation(gc.cardNow, temp_x, temp_y);
+
+							int[] temp = Common.newCardPosition(unoView, -1);	//-1为出牌表
+							moveAnimation(gc.cardNow, temp[0], temp[1]);
+
+							//保存转换之前的玩家
+							int beyond_player = gc.currentPlayer;
+
+							gc.play(gc.currentCard, gc.cardNow);
+
 							//处理万能牌
-							if (gc.cardNow.type == Type.Wild){
-								gc.currentColor = gc.alp.get(gc.currentPlayer).returnRandomColor();
+							if (gc.currentCard.type == Type.Wild || gc.currentCard.type == Type.Wild_Draw_Four){
+								gc.currentColor = gc.alp.get(beyond_player).returnRandomColor();
 								blinkAnimationColor();
 							}
 
-							//设置出牌列表的坐标
-							update();
-							int temp_x = screenWidth/2 - cardWidth + (outCards.size()-1)*cardWidth/8;
-							int temp_y = screenHeight/2 - cardHeight;
-							if(outCards.size() == OUTCARDS_MAX){
-								temp_x = screenWidth/2 - cardWidth;
-							}
-							moveAnimation(gc.cardNow, temp_x, temp_y);
-
-							gc.play(gc.currentCard, gc.cardNow);
 							Common.rePosition(unoView, gc.alp.get(3), 3);
 							gc.cardNow = null;
 							update();
@@ -764,7 +789,10 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			System.out.println("系统的当前颜色变了，变成了" + gc.currentColor);
 			is_chooseColor = false;
 			blinkAnimationColor();
-			gc.goOn();
+			if(gc.currentCard.type == Type.Wild)
+				gc.goOn();
+			else if (gc.currentCard.type == Type.Wild_Draw_Four)
+				gc.drawFour();
 		}
 
 		Card temp_card = eventAction.buttonEvent();
@@ -779,7 +807,11 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 		return super.onTouchEvent(event);
 	}
 
-	//出牌动画
+	/*
+	出牌动画
+	target_x,target_y为目标横纵坐标
+	card为目标卡牌
+	 */
 	public void moveAnimation(Card card, int target_x, int target_y){
 		int start_x = card.x;
 		int start_y = card.y;
@@ -816,21 +848,40 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			update();
 		}
 
-		switch (gc.currentColor){
-			case Red:
-				outCards.get(outCards.size()-1).bitmap = card_change[0];
-				break;
-			case Yellow:
-				outCards.get(outCards.size()-1).bitmap = card_change[1];
-				break;
-			case Blue:
-				outCards.get(outCards.size()-1).bitmap = card_change[2];
-				break;
-			case Green:
-				outCards.get(outCards.size()-1).bitmap = card_change[3];
-				break;
-			default:
-				break;
+		if (gc.currentCard.type == Type.Wild) {
+			switch (gc.currentColor) {
+				case Red:
+					outCards.get(outCards.size() - 1).bitmap = card_change[0];
+					break;
+				case Yellow:
+					outCards.get(outCards.size() - 1).bitmap = card_change[1];
+					break;
+				case Blue:
+					outCards.get(outCards.size() - 1).bitmap = card_change[2];
+					break;
+				case Green:
+					outCards.get(outCards.size() - 1).bitmap = card_change[3];
+					break;
+				default:
+					break;
+			}
+		}else if (gc.currentCard.type == Type.Wild_Draw_Four){
+			switch (gc.currentColor) {
+				case Red:
+					outCards.get(outCards.size() - 1).bitmap = card_change[4];
+					break;
+				case Yellow:
+					outCards.get(outCards.size() - 1).bitmap = card_change[5];
+					break;
+				case Blue:
+					outCards.get(outCards.size() - 1).bitmap = card_change[6];
+					break;
+				case Green:
+					outCards.get(outCards.size() - 1).bitmap = card_change[7];
+					break;
+				default:
+					break;
+			}
 		}
 
 		for(int i = 5; i < 18; i++){
@@ -838,6 +889,7 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			Sleep(50);
 			update();
 		}
+
 	}
 
 	public void gameWin(){

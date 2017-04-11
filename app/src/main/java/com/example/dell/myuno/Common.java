@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Common {
 	public static UNOView unoView;
-	
+
 	public static void rePosition(UNOView unoView, Player player, int playerNumber){
 		if (playerNumber == 0){
 			for (int i = 0; i < player.cardNumber(); i++){
@@ -34,6 +34,43 @@ public class Common {
 				card.setLocation(x, unoView.cardHeight/2+(4*(i+1)-2)*unoView.cardHeight/21);
 			}
 		}
+	}
+
+	/*
+	用于计算出牌动画的目标横纵坐标
+	返回值为x,y组成的数组
+	type为动画类型
+	-1表示出牌列表
+	0表示主玩家
+	1表示电脑1
+	2表示电脑2
+	3表示电脑3
+	 */
+	public static int[] newCardPosition(UNOView unoView, int type){
+		int[] result = new int[2];
+
+		switch (type){
+			case -1:
+				if (unoView.OUTCARDS_MAX == unoView.outCards.size())
+					result[0] = unoView.screenWidth/2 - unoView.cardWidth;
+				else
+					result[0] = unoView.screenWidth/2 - unoView.cardWidth +
+						(unoView.outCards.size()-1)*unoView.cardWidth/8;
+				result[1] = unoView.screenHeight/2 - unoView.cardHeight;
+				break;
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			default:
+				break;
+		}
+
+		return result;
 	}
 
 //	public static void moveCardAnimation(UNOView unoView, Card card, int target_x, int target_y){

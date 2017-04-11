@@ -12,7 +12,7 @@ public class Card {
 	Color color;    			//纸牌颜色
 	Type type;					//纸牌类型
 	int number;     			//纸牌数字
-	int id;		 				//代号
+	int id;		 				//代号（因为纸牌有重复）
 	int x = 0;					//横坐标
 	int y = 0; 					//纵坐标
 	int width;					//宽度

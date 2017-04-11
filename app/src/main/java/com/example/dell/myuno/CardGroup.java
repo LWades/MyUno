@@ -139,7 +139,7 @@ public class CardGroup {
 			swap(array,i,j);
 		}
 		
-		for (int i = 0; i < 107; i++)
+		for (int i = 0; i < 108; i++)
 			CardGroup[array[i]] = card[i];
 	}
 	public Card draw(){

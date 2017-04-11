@@ -66,9 +66,11 @@ public class EventAction {
 					unoView.outCards.add(card);
 					unoView.gc.alp.get(0).playCard(card);
 					unoView.gc.cardNow = card;
-					System.out.println("cardNow颜色" + unoView.gc.cardNow.color);
-					System.out.println("cardNow数字" + unoView.gc.cardNow.number);
-//					Common.moveCardAnimation(unoView, card, 400, 240);
+//					UNOView.isDraw = true;
+					if(unoView.gc.cardNow != null){
+						System.out.println("cardNow颜色" + unoView.gc.cardNow.color);
+						System.out.println("cardNow数字" + unoView.gc.cardNow.number);
+					}
 					Common.rePosition(unoView, unoView.gc.alp.get(0), 0);
 					unoView.update();
 					card.isClicked = false;

@@ -35,9 +35,7 @@ public class GameController {
 		
 		//界面初始化
 		System.out.println("界面初始化成功");
-		
-//		System.out.println("ϴ���뷢�Ƴɹ�");
-		
+
 		//系统选出牌库中随机的一张
 		currentPlayer = (int)(Math.random()*100 % 4);
 		System.out.println("currentPlayer" + currentPlayer);
@@ -78,7 +76,9 @@ public class GameController {
 	public void goOn() {
 		// TODO Auto-generated method stub
 		if (currentDirection == anticlockwise){
+			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			currentPlayer = (currentPlayer + 1) % playerNumber;
+			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			//界面转换
 			System.out.println("界面按逆时针转换");
 		}else{
@@ -204,8 +204,14 @@ public class GameController {
 //			goOn();
 		}else if (card.type == Type.Wild_Draw_Four){
 //			changeCurrentColor(chooseColor());
-			drawFour();
+			if(currentPlayer == 0){
+				unoView.is_chooseColor = true;
+			}else{
+				drawFour();
+			}
+//			drawFour();
 		}
+		UNOView.isDraw = true;
 	}
 	
 	public static void main(String[] args){
