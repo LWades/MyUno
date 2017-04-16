@@ -67,10 +67,10 @@ public class EventAction {
 					unoView.gc.alp.get(0).playCard(card);
 					unoView.gc.cardNow = card;
 //					UNOView.isDraw = true;
-					if(unoView.gc.cardNow != null){
-						System.out.println("cardNow颜色" + unoView.gc.cardNow.color);
-						System.out.println("cardNow数字" + unoView.gc.cardNow.number);
-					}
+//					if(unoView.gc.cardNow != null){
+//						System.out.println("cardNow颜色" + unoView.gc.cardNow.color);
+//						System.out.println("cardNow数字" + unoView.gc.cardNow.number);
+//					}
 					Common.rePosition(unoView, unoView.gc.alp.get(0), 0);
 					unoView.update();
 					card.isClicked = false;
@@ -90,7 +90,12 @@ public class EventAction {
 				(x < 4*unoView.screenWidth/5 + unoView.cardBackBitmap.getWidth()/2/2) &&
 				(y > unoView.screenHeight/4) &&
 				(y < unoView.screenHeight/4 + unoView.cardBackBitmap.getHeight()/2)){
-			unoView.gc.alp.get(0).drawCard(unoView.gc.cg.draw());
+			Card temp_card = unoView.gc.cg.draw();
+			temp_card.x = UNOView.CARDGROUP_X;
+			temp_card.y = UNOView.CARDGROUP_Y;
+			unoView.gc.alp.get(0).drawCard(temp_card);
+			int[] temp = Common.newCardPosition(unoView, 0);
+			Common.moveAnimation(unoView, temp_card, temp[0], temp[1]);
 			Common.rePosition(unoView, unoView.gc.alp.get(0), 0);
 			unoView.update();
 			unoView.gc.goOn();

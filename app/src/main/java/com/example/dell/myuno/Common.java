@@ -59,18 +59,45 @@ public class Common {
 				result[1] = unoView.screenHeight/2 - unoView.cardHeight;
 				break;
 			case 0:
+				result[0] = unoView.screenWidth/2-(4-unoView.gc.alp.get(0).cardNumber()-1)*unoView.cardWidth/4;
+				result[1] = unoView.screenHeight-unoView.cardHeight;
 				break;
 			case 1:
+				result[0] = unoView.screenWidth - unoView.cardWidth/2;
+				result[1] = unoView.cardHeight/2+(4*(unoView.gc.alp.get(1).cardNumber())-2)*unoView.cardHeight/21;
 				break;
 			case 2:
+				result[0] = unoView.screenWidth/2-(4-unoView.gc.alp.get(2).cardNumber()-1)*unoView.cardWidth*1/4;
+				result[1] = 0;
 				break;
 			case 3:
+				result[0] = 0;
+				result[1] = unoView.cardHeight/2+(4*(unoView.gc.alp.get(3).cardNumber())-2)*unoView.cardHeight/21;
 				break;
 			default:
 				break;
 		}
 
 		return result;
+	}
+
+	public static void moveAnimation(UNOView unoView, Card card, int target_x, int target_y){
+		int start_x = card.x;
+		int start_y = card.y;
+		int x = (target_x - start_x) / 10;
+		int y = (target_y - start_y) / 10;
+
+		for (int i = 0; i < 10; i++){
+			start_x += x;
+			start_y += y;
+			if (i == 9)
+				card.setLocation(target_x, target_y);
+			else
+				card.setLocation(start_x, start_y);
+			unoView.update();
+			unoView.Sleep(30);
+		}
+
 	}
 
 //	public static void moveCardAnimation(UNOView unoView, Card card, int target_x, int target_y){

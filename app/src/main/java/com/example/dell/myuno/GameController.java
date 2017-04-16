@@ -76,15 +76,15 @@ public class GameController {
 	public void goOn() {
 		// TODO Auto-generated method stub
 		if (currentDirection == anticlockwise){
-			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
+//			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			currentPlayer = (currentPlayer + 1) % playerNumber;
-			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
+//			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			//界面转换
 			System.out.println("界面按逆时针转换");
 		}else{
-			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
+//			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			currentPlayer = (currentPlayer + 7) % playerNumber;
-			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
+//			System.out.println("方向:" + currentDirection + "当前玩家：" + currentPlayer);
 			//界面转换
 			System.out.println("界面按顺时针转换");
 		}

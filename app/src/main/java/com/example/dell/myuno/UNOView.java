@@ -24,6 +24,8 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 //	static final int CARDHEIGHT = 118*2;
 	static final int OUTCARDS_MAX = 20;
 	static boolean isDraw = false;
+	static int CARDGROUP_X;					//牌组的横坐标
+	static int CARDGROUP_Y;					//牌组的纵坐标
 
 	SurfaceHolder surfaceHolder;	//控制Surface的接口
 	Canvas canvas;					//画布
@@ -213,11 +215,12 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 		//抓牌图片
 		buttonZhuaPai = BitmapFactory.decodeResource(getResources(), R.drawable.zhuapai);
 
-		for (int i = 0; i < 107; i++){
+		for (int i = 0; i < 108; i++){
 			cardGroup.card[i].width = screenWidth/8;
 			cardGroup.card[i].height = screenWidth/8/48*77;
 		}
-
+		UNOView.CARDGROUP_X = 4 * screenWidth / 5;
+		UNOView.CARDGROUP_Y = screenHeight / 4;
 //		for (int i = 0; i < 107; i++){
 //			Bitmap.createScaledBitmap(cardGroup.card[i].bitmap, 10, 10, true);
 //		}
@@ -607,6 +610,7 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						gc.play(gc.currentCard, gc.cardNow);
 
 						if (isDraw) {
+							showAllCard();
 							gc.cardNow = null;
 							isDraw = false;
 						}
@@ -614,9 +618,16 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						update();
 					}else if (gc.currentPlayer == 1){
 						setTimer(4, 0);
+						showAllCard();
 						gc.cardNow = gc.alp.get(1).computerPlayCard(gc.currentCard, gc.currentColor);
 						if (gc.cardNow == null){
-							gc.alp.get(1).drawCard(gc.cg.draw());
+							Card temp_card = gc.cg.draw();
+							temp_card.x = UNOView.CARDGROUP_X;
+							temp_card.y = UNOView.CARDGROUP_Y;
+							gc.alp.get(1).drawCard(temp_card);					//抓牌
+							int[] temp = Common.newCardPosition(unoView, 1);
+							moveAnimation(temp_card, temp[0], temp[1]);			//抓牌动画
+
 							Common.rePosition(unoView, gc.alp.get(1), 1);
 							System.out.println("玩家" + 1 + gc.alp.get(1).cardNumber() + "张手牌");
 							for (int i = 0; i < gc.alp.get(1).cardNumber(); i++)
@@ -655,9 +666,16 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						}
 					}else if (gc.currentPlayer == 2){
 						setTimer(4, 1);
+						showAllCard();
 						gc.cardNow = gc.alp.get(2).computerPlayCard(gc.currentCard, gc.currentColor);
 						if (gc.cardNow == null){
-							gc.alp.get(2).drawCard(gc.cg.draw());
+							Card temp_card = gc.cg.draw();
+							temp_card.x = UNOView.CARDGROUP_X;
+							temp_card.y = UNOView.CARDGROUP_Y;
+							gc.alp.get(2).drawCard(temp_card);				//抓牌
+							int[] temp = Common.newCardPosition(unoView, 2);
+							moveAnimation(temp_card, temp[0], temp[1]);			//抓牌动画
+
 							Common.rePosition(unoView, gc.alp.get(2), 2);
 							System.out.println("玩家" + 2 + gc.alp.get(2).cardNumber() + "张手牌");
 							for (int i = 0; i < gc.alp.get(2).cardNumber(); i++)
@@ -697,9 +715,16 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 						}
 					}else if (gc.currentPlayer == 3){
 						setTimer(4, 2);
+						showAllCard();
 						gc.cardNow = gc.alp.get(3).computerPlayCard(gc.currentCard, gc.currentColor);
 						if (gc.cardNow == null){
-							gc.alp.get(3).drawCard(gc.cg.draw());
+							Card temp_card = gc.cg.draw();
+							temp_card.x = UNOView.CARDGROUP_X;
+							temp_card.y = UNOView.CARDGROUP_Y;
+							gc.alp.get(3).drawCard(temp_card);				//抓牌
+							int[] temp = Common.newCardPosition(unoView, 3);
+							moveAnimation(temp_card, temp[0], temp[1]);			//抓牌动画
+
 							Common.rePosition(unoView, gc.alp.get(3), 3);
 							System.out.println("玩家" + 3 + gc.alp.get(3).cardNumber() + "张手牌");
 							for (int i = 0; i < gc.alp.get(3).cardNumber(); i++)
@@ -890,6 +915,38 @@ public class UNOView extends SurfaceView implements SurfaceHolder.Callback, Runn
 			update();
 		}
 
+	}
+
+	public void showAllCard(){
+		System.out.println("玩家有" + gc.alp.get(0).cardNumber() + "张卡牌");
+		for(int i = 0; i < gc.alp.get(0).cardNumber(); i++){
+			System.out.print("【颜色: " + gc.alp.get(0).cardGroup.get(i).color + " 数字" + gc.alp.get(0).cardGroup.get(i).number + " 类型" +
+					gc.alp.get(0).cardGroup.get(i).type + " 位图" + gc.alp.get(0).cardGroup.get(i).bitmap  +
+					" 横坐标" + gc.alp.get(0).cardGroup.get(i).x + " 纵坐标" + gc.alp.get(0).cardGroup.get(i).y+ "】 ");
+		}
+		System.out.print("\n");
+
+		System.out.println("电脑1有" + gc.alp.get(1).cardNumber() + "张卡牌");
+		for(int i = 0; i < gc.alp.get(1).cardNumber(); i++){
+			System.out.print("【颜色: " + gc.alp.get(1).cardGroup.get(i).color + " 数字" + gc.alp.get(1).cardGroup.get(i).number + " 类型" +
+					gc.alp.get(1).cardGroup.get(i).type + " 位图" + gc.alp.get(1).cardGroup.get(i).bitmap  +
+					" 横坐标" + gc.alp.get(1).cardGroup.get(i).x + " 纵坐标" + gc.alp.get(1).cardGroup.get(i).y+ "】 ");
+		}
+		System.out.print("\n");
+		System.out.println("电脑2有" + gc.alp.get(2).cardNumber() + "张卡牌");
+		for(int i = 0; i < gc.alp.get(2).cardNumber(); i++){
+			System.out.print("【颜色: " + gc.alp.get(2).cardGroup.get(i).color + " 数字" + gc.alp.get(2).cardGroup.get(i).number + " 类型" +
+					gc.alp.get(2).cardGroup.get(i).type + " 位图" + gc.alp.get(2).cardGroup.get(i).bitmap +
+					" 横坐标" + gc.alp.get(2).cardGroup.get(i).x + " 纵坐标" + gc.alp.get(2).cardGroup.get(i).y + "】 ");
+		}
+		System.out.print("\n");
+		System.out.println("电脑3有" + gc.alp.get(3).cardNumber() + "张卡牌");
+		for(int i = 0; i < gc.alp.get(3).cardNumber(); i++){
+			System.out.print("【颜色: " + gc.alp.get(3).cardGroup.get(i).color + " 数字" + gc.alp.get(3).cardGroup.get(i).number +  " 类型" +
+					gc.alp.get(3).cardGroup.get(i).type + " 位图" + gc.alp.get(3).cardGroup.get(i).bitmap +
+					" 横坐标" + gc.alp.get(3).cardGroup.get(i).x + " 纵坐标" + gc.alp.get(3).cardGroup.get(i).y+ "】 ");
+		}
+		System.out.print("\n");
 	}
 
 	public void gameWin(){

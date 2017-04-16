@@ -151,6 +151,10 @@ public class CardGroup {
 			return CardGroup[pos+1];
 		}
 	}
+
+//	public Card draw(){
+//		return card[1];
+//	}
 	
 	public static void main(String[] args){
 		CardGroup g =new CardGroup();
