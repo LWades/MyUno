@@ -1,0 +1,242 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_1">
+
+
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/linearLayout"
+        android:layout_above="@+id/sure"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_weight="1.1"
+            android:gravity="center_vertical"
+            android:textSize="22dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:textColor="#000000"
+            android:text="右电脑："/>
+
+
+
+        <RadioGroup
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:id="@+id/RadioGroupright"
+            >
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:id="@+id/right_easy"
+
+                android:button="@null"
+                android:checked="true"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="一般" />
+
+
+                />
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:id="@+id/right_hard"
+
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="聪明" />
+
+        </RadioGroup>
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/linearLayout3"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_weight="1.1"
+            android:gravity="center_vertical"
+            android:textSize="22dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:textColor="#000000"
+            android:text="上电脑："/>
+
+
+
+        <RadioGroup
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:id="@+id/RadioGrouptop"
+            >
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+
+                android:id="@+id/top_easy"
+                android:button="@null"
+                android:checked="true"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="一般" />
+
+
+            />
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:id="@+id/top_hard"
+
+
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="聪明" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/linearLayout2"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_weight="1.1"
+            android:gravity="center_vertical"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="左电脑："/>
+
+
+
+        <RadioGroup
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:id="@+id/RadioGroupleft"
+            >
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:id="@+id/left_easy"
+
+                android:button="@null"
+                android:checked="true"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="一般" />
+
+
+            />
+
+            <RadioButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+
+                android:id="@+id/left_hard"
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="聪明" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="#379be9"
+        android:textSize="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="进入游戏"
+        android:id="@+id/sure"/>
+
+
+</RelativeLayout>
